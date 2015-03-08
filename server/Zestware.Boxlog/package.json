@@ -1,0 +1,15 @@
+{
+  "name": "Zestware.Boxlog",
+  "version": "0.0.0",
+  "description": "Zestware.Boxlog",
+  "main": "app.js",
+  "author": {
+    "name": "s.yearsley",
+    "email": ""
+  },
+  "dependencies": {
+    "express": "3.4.4",
+    "jade": "*",
+    "stylus": "*"
+  }
+}
