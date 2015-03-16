@@ -1,8 +1,7 @@
 ﻿import express = require('express');
-import routes = require('./routes/index');
-import user = require('./routes/user');
 import http = require('http');
 import path = require('path');
+import fs = require('fs');
 
 var app = express();
 
@@ -17,8 +16,6 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
 
-import stylus = require('stylus');
-app.use(stylus.middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
@@ -26,8 +23,13 @@ if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.get('/users', user.list);
+// dynamically include routes (Controller)
+fs.readdirSync('./controllers').forEach(file => {
+    if (file.substr(-3) == '.js') {
+        var route = require('./controllers/' + file);
+        route.controller(app);
+    }
+});
 
 http.createServer(app).listen(app.get('port'), () => {
     console.log('Express server listening on port ' + app.get('port'));
